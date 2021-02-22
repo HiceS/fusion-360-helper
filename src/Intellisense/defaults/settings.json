@@ -1,0 +1,5 @@
+{
+	"python.autoComplete.extraPaths":	[""],
+	"python.pythonPath":	"",
+	"python.linting.pylintEnabled": false
+}
