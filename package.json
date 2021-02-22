@@ -10,14 +10,19 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:fusion-360-helper.helloWorld"
+		"onCommand:fusion-360-helper.createPythonAddin",
+		"onCommand:fusion-360-helper.createCppAddin"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "fusion-360-helper.helloWorld",
-				"title": "Hello World"
+				"command": "fusion-360-helper.createPythonAddin",
+				"title": "Create F360 Python Addin"
+			},
+			{
+				"command": "fusion-360-helper.createCppAddin",
+				"title": "Create F360 CPP Addin"
 			}
 		]
 	},
