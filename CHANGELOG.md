@@ -1,11 +1,13 @@
 # Change Log
 
-All notable changes to the `Fusion 360 Helper` extension will be documented in this file.
+All notable changes to the `Fusion 360 Addin Helper` extension will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+- Renamed Display name to better reflect the extension
 
 ## [1.0.01] - 2021-02-23
 
