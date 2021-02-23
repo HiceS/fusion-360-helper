@@ -10,8 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:fusion-360-helper.createPythonAddin",
-		"onCommand:fusion-360-helper.createCppAddin"
+		"workspaceContains:**/*.manifest"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -23,6 +22,10 @@
 			{
 				"command": "fusion-360-helper.createCppAddin",
 				"title": "Create F360 CPP Addin"
+			},
+			{
+				"command": "fusion-360-helper.linkPython",
+				"title": "Link Fusion 360 Python"
 			}
 		]
 	},
