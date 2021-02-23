@@ -1,5 +1,4 @@
 import { window } from 'vscode';
-import { checkPathExistsSync, forceCheckPythonSync } from './findPython';
 import { setPythonPath } from './envFiles';
 
 /**
@@ -27,15 +26,6 @@ export class PythonPath {
     }
 
     public getPathSync(){
-        forceCheckPythonSync();
-    }
-
-    public setPath(path: string){
-        if (checkPathExistsSync(path)){
-            window.showInformationMessage("Updated Fusion 360 Python Path");
-            this.path = path;
-            setPythonPath(path);
-        }
     }
 
     public getPath(){

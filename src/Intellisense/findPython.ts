@@ -1,118 +1,69 @@
-// Path on windows looks like this: 
-// C:/Users/[name]/AppData/Local/Autodesk/webdeploy/production/c1a39fe96c80078ad566b938d0f03989f4b85b09/Python/python.exe
-
-// Lib Path would look like on windows:
-// C:/Users/[name]/AppData/Roaming/Autodesk/Autodesk Fusion 360/API/Python/defs
-
 import path = require('path');
 import fs = require('fs');
-import * as vscode from 'vscode';
 import { F_OK } from 'constants';
-import {PythonPath} from './pythonPath';
-import { window, workspace } from 'vscode';
+import { window } from 'vscode';
 
-const PY_PATH_INSTANCE = PythonPath.getInstance();
+import {getOS, fusionNotInstalledError} from '../utilities';
+import * as types from '../types';
+import {setPythonPath} from './envFiles';
 
-export function checkPythonSettings(): boolean {
-    if (workspace !== undefined) {
-        const settings = workspace.getConfiguration('python');
-        // check if the found path equals the current one?
-        // update the refs if non exist ?
-        // add extra command to do it automatically
-        return true;
-    }else{
-        const newLaunch = window.showErrorMessage("Cannot find the Python Settings folders.\nWould you like to create them?", "Yes", "No");
-        newLaunch.then(value => {
-            if ("Yes"){
-                // create a new .vscode folder
-                // copy the defaults file into it
-                // set the python path
-            }
-        });
-        return false;
-    }
-}
-
-export function getPythonAutoCompleteLibs(): string {
-    return getWindowsRefPath();
-}
-
+/**
+ * This is the function that updates the settings,
+ * It attempts the find the Fusion Python Path and the Fusion adks defs path
+ */
 export function getPythonLib() {
-    const winPath = getWindowsPath();
+    let fusPath: string = "";
+    let pythonPath: string = "";
 
-    if (winPath !== ""){
-        // async approach
-        findInDirs(winPath);
+    let libraryPath: string = "";
+
+    switch (getOS()) {
+        case types.OS.osx:
+            /// get osx paths
+            fusPath = getOSXPath();
+            if (fusPath === ""){
+                fusionNotInstalledError();
+                return;
+            }
+            // /Autodesk Fusion 360.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python
+            pythonPath = path.join("Autodesk Fusion 360.app", "Contents", "Frameworks", "Python.framework", "Versions", "Current", "bin", "python");
+            libraryPath = getOSXRefPath();
+            break;
+        case types.OS.windows:
+            // get windows paths 
+            fusPath = getWindowsPath();
+            if (fusPath === ""){
+                fusionNotInstalledError();
+                return;
+            }
+            pythonPath = path.join("Python", "python.exe");
+            libraryPath = getWindowsRefPath();
+            break;
+        default:
+            // do nothing
+            return;
     }
-}
 
-function findInDirs(fusPath: string){
+    // Gets a list of folders to look through
     fs.readdir(fusPath, (err, files) => {
         if (err){
-            vscode.window.showErrorMessage(`Could not read folder in ${fusPath}`);
+            window.showErrorMessage(`Could not read folder in ${fusPath}`);
             return;
         }
-
+        let entirePath = "";
+        // Looks through each folder in the fusPath
         files.forEach(folder => {
-            isPythonInDir(path.join(fusPath, folder));
+            entirePath = path.join(fusPath, folder, pythonPath);
+            // Attempts to access the file to see if it exists
+            fs.access(entirePath, F_OK, err => {
+                if (!err){
+                    // This must be correct
+                    setPythonPath(entirePath, libraryPath);
+                }
+            });
         });
             
     });
-}
-
-function isPythonInDir(dir: string){
-    // search for 'python/python.exe' for windows
-
-    const pythonPath = path.join(dir, "Python", "python.exe");
-
-    fs.access(pythonPath, F_OK, err => {
-        if (!err){
-            // we can assign the new Python interpretur
-            PY_PATH_INSTANCE.setPath(pythonPath);
-        }
-    });
-}
-
-/**
- * Function to sync check if Python Path exists,
- * If not delay the intellisense and find the new path
- */
-export function checkPythonExistsSync(): boolean {
-    if (PY_PATH_INSTANCE.getPath() === ""){
-        return false;
-    }
-    return fs.existsSync(PY_PATH_INSTANCE.getPath());
-}
-
-export function checkPathExistsSync(objPath: string): boolean{
-    return fs.existsSync(objPath);
-}
-
-/**
- * Sync way of getting the correct python folder
- */
-export function forceCheckPythonSync() {
-    var retPath = "";
-    const PY_PATH_INSTANCE = PythonPath.getInstance();
-    const fusPath = getWindowsPath();
-
-    const folders = fs.readdirSync(fusPath);
-
-    folders.forEach(folder => {
-        const fullPath = path.join(fusPath, folder, 'Python', 'python.exe');
-
-        if (fs.existsSync(fullPath)){
-            retPath = fullPath;
-        }
-
-    });
-
-    if (retPath === ""){
-        vscode.window.showErrorMessage(`Cannot find Fusion 360 libs at path ${retPath}`);
-    }else {
-        PY_PATH_INSTANCE.setPath(retPath);
-    }
-    
 }
 
 function getWindowsPath(): string {
@@ -120,7 +71,7 @@ function getWindowsPath(): string {
         const fusPath = path.join(process.env.APPDATA, '..', 'Local', 'Autodesk', 'webdeploy', 'production');
         return fusPath;
     }
-    vscode.window.showErrorMessage("Cannot find Windows APPDATA Path on this machine");
+    window.showErrorMessage("Cannot find Windows APPDATA Path on this machine");
     return "";
 }
 
@@ -130,6 +81,26 @@ function getWindowsRefPath(): string {
         const fusPath = path.join(process.env.APPDATA, 'Autodesk', 'Autodesk Fusion 360', 'API', 'Python', 'defs');
         return fusPath;
     }
-    vscode.window.showErrorMessage("Cannot find Windows APPDATA Path on this machine");
+    window.showErrorMessage("Cannot find Windows APPDATA Path on this machine");
+    return "";
+}
+
+function getOSXPath(): string {
+    // /Users/[name]/Library/Application Support/Autodesk/webdeploy/production/
+    // process.env.HOME + Library
+    if (process.env.HOME){
+        return path.join(process.env.HOME, 'Library', 'Application Support', 'Autodesk', 'webdeploy', 'production');
+    }
+    window.showErrorMessage("Cannot find OSX HOME Path on this machine, this is a bug");
+    return "";
+}
+
+function getOSXRefPath(): string {
+    // /Users/[name]/Library/Application Support/Autodesk/Autodesk Fusion 360/API/Python/defs
+    // process.env.HOME + Library
+    if (process.env.HOME){
+        return path.join(process.env.HOME, 'Library', 'Application Support', 'Autodesk', 'Autodesk Fusion 360', 'API', 'Python', 'defs');
+    }
+    window.showErrorMessage("Cannot find OSX HOME Path on this machine, this is a bug");
     return "";
 }
