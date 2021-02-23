@@ -15,7 +15,6 @@ export function setPythonPath(pythonPath: string, libraryPath: string): void{
         let extraPaths = [];
         extraPaths.push(libraryPath);
         settings.update("autoComplete.extraPaths", extraPaths);
-
         settings.update("pythonPath", pythonPath);
     }else{
         const newLaunch = window.showErrorMessage("Cannot find the Python Settings folders.\nWould you like to create them?", "Yes", "No");

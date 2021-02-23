@@ -15,19 +15,12 @@ import * as manifest from './defaults/mainfest.json';
 
 // This is called by the register command in extension.ts
 export function generatePythonAddin(){
-    vscode.window.showInformationMessage('Hello World from Fusion 360 Helper - Create Python Addin!');
+    vscode.window.showInformationMessage('Currently generating python addins is still under development and the quick selection toolbars are a prototype.');
 }
 
 export function generateCppAddin(){
-    vscode.window.showInformationMessage('Hello World from Fusion 360 Helper - Create CPP Addin!');
+    vscode.window.showInformationMessage('Currently generating CPP addins is still under development and the quick selection toolbars are a prototype.');
 }
-
-const addinManifest = `Hello my name is 
-MANIFEST
-PLZ SAVE ME
-`;
-
-const defaultFile = `TEST DEFAULT FILE`;
 
 function createFile(filePath: string, fileName: string, contents: string): void{
     fs.writeFile(path.join(filePath, fileName), contents, err => {
