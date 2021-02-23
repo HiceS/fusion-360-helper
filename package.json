@@ -15,8 +15,8 @@
 	},
 	"icon": "images/fusion-logo.png",
 	"galleryBanner": {
-		"color": "#FFFFFF",
-		"theme": "dark"
+		"color": "#F2F2F2",
+		"theme": "light"
 	},
 	"engines": {
 		"vscode": "^1.53.0"

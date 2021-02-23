@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.01] - 2021-02-23
+
+### Changed
+
+- Fixed Banner Colors on Market Page
+
 ## [1.0.0] - 2021-02-23
 
 ### Added
