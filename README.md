@@ -1,70 +1,46 @@
-# fusion-360-helper README
+# Fusion 360 Addin Helper
 
-This is the README for your extension "fusion-360-helper". After writing up a brief description, we recommend including the following sections.
+<a href="https://github.com/HiceS/fusion-360-helper">![Fusion Badge](https://img.shields.io/static/v1?label=Github&message=Fusion%20360%20Helper&color=bf5808&style=flat-square)</a>
+
+This is an extension that provides some useful functions to help with Addin development.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Automatically detects and sets the following settings for the Python Interpreter if you open a Python Addin with a manifest.
 
-For example if there is an image subfolder under your extension project workspace:
+* `python.pythonPath`: enables this and points to Fusion Python Location
+* `python.autoComplete.extraPaths`: adds the adsk library for autocomplete
 
-\!\[feature X\]\(images/feature-x.png\)
+This can be manually reset with the following commands:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+* `Shift+P` + `Link Fusion 360 Libraries`
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Fusion 360 must be installed on your machine in order for the extension to locate the addin files for configuration.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
+Entension includes the following settings in `contributes.configuration`
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `fusion-360-helper.enable`: enable/disable this extension
+* `fusion-360-helper.path`: fusion 360 python path
+* `fusion-360-helper.definitions`: fusion 360 library definition locations
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+TBD
+
+**MACOS** : Possibility for unintended pathing. 
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 1.0.0
 
-Initial release of ...
+Initial release of Fusion 360 Helper
 
-### 1.0.1
+## Legal Note
 
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-<!--  -->
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+This is privately published and the above logo featured is a trademarked symbol of the Autodesk Coporation. I am publishing this as an individual to benefit the general public. I do not intend to imply Autodesk is in any way liable for any code published by this account or in this extension. Nor anything said or done by the Extension.
