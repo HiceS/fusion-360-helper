@@ -50,7 +50,29 @@
 				"command": "fusion-360-helper.linkPython",
 				"title": "Link Fusion 360 Python"
 			}
-		]
+		],
+		"configuration": {
+			"title": "F360 Helper",
+			"properties": {
+				"fusion-360-helper.enabled":{
+					"type": ["boolean", null],
+					"default": null,
+					"description": "Enables the Fusion 360 Helper Extension for this workspace"
+				},
+				"fusion-360-helper.python.pythonPath":{
+					"type": "string",
+					"description": "Fusion 360 Python Path including the binary"
+				},
+				"fusion-360-helper.python.extraLibs":{
+					"type": "array",
+					"description": "List of extra libraries to be resolved by intellisense, adsk libs"
+				},
+				"fusion-360-helper.fusionPath":{
+					"type": "string",
+					"description": "Fusion Executable Path for running Fusion 360"
+				}
+			}
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

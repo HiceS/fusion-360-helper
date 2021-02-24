@@ -16,6 +16,13 @@ export function setPythonPath(pythonPath: string, libraryPath: string): void{
         extraPaths.push(libraryPath);
         settings.update("autoComplete.extraPaths", extraPaths);
         settings.update("pythonPath", pythonPath);
+
+        // extension settings
+        let config = workspace.getConfiguration('fusion-360-helper');
+        config.update("python.pythonPath", pythonPath);
+        config.update("python.extraLibs", extraPaths);
+
+
     }else{
         const newLaunch = window.showErrorMessage("Cannot find the Python Settings folders.\nWould you like to create them?", "Yes", "No");
         newLaunch.then(value => {

@@ -85,6 +85,9 @@ async function findFusion360Executable(os: OS) {
             // Attempts to access the file to see if it exists
             fs.access(entirePath, F_OK, err => {
                 if (!err){
+                    let config = vscode.workspace.getConfiguration('fusion-360-helper');
+                    config.update("fusionPath", entirePath);
+                    
                     spawnExec(exeName, path.join(fusPath, folder));
                 }
             });
