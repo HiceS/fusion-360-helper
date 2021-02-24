@@ -61,8 +61,7 @@ export function getPythonLib() {
                     setPythonPath(entirePath, libraryPath);
                 }
             });
-        });
-            
+        });     
     });
 }
 

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2021-02-24
+### Added
+- Added Open Fusion 360 Button
+- Made it responsive on Windows
+### Removed
+- Removed some information messages
+### Changed
+- Started using statusbarmessage
+
 ## [1.0.2] - 2021-02-23
 ### Added
 - Renamed Display name to better reflect the extension
@@ -23,7 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2021-02-23
 ### Added
-
 - Initial release
 - Auto Detect Python Libraries
 - Buttons to overwrite the current settings
