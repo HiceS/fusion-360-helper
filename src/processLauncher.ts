@@ -15,7 +15,7 @@ import {fusionMenuItem} from './extension';
 // C:\Users\[name]\AppData\Local\Autodesk\webdeploy\production\6a0c9611291d45bb9226980209917c3d
 
 // OSX Path
-// TBD
+// /Users/[name]/Library/Application Support/Autodesk/webdeploy/production/1b7a11f5bfe54ff0933e8d22edb9271a12e4377a/Autodesk Fusion 360.app/Contents/Frameworks/Qt/Q
 
 export function launchFusion360(){
     checkFusionOpen(true);
@@ -27,25 +27,24 @@ export async function checkFusionOpen(open = false){
 
     if (getOS() === OS.windows){
         running = await isProcessRunning('Fusion360.exe');
-        // if not open then you need to open it if button is pressed maybe?
-        // or resolve from context
-        
-        setFusionMenuText(running);
+    }
+    else{
+        running = await isProcessRunning('Fusion 360.app');
+    }
 
-        if (running){
-            //vscode.window.setStatusBarMessage("Fusion 360 is currently open");
-            // maybe focus on the window in a windows way
-            // probably close it now ?
-        }else{
-            //vscode.window.setStatusBarMessage("Fusion 360 is currently closed");
-            // now we need to open it
-            if (open){
-                findFusion360Executable(getOS());
-                setFusionMenuText(running);
-            }
-        }
+    setFusionMenuText(running);
+
+    if (running){
+        //vscode.window.setStatusBarMessage("Fusion 360 is currently open");
+        // maybe focus on the window in a windows way
+        // probably close it now ?
     }else{
-        fusionMenuItem.text = "$(debug-stop) No Fusion on OSX";
+        //vscode.window.setStatusBarMessage("Fusion 360 is currently closed");
+        // now we need to open it
+        if (open){
+            findFusion360Executable(getOS());
+            setFusionMenuText(running);
+        }
     }
 }
 
@@ -60,6 +59,12 @@ async function findFusion360Executable(os: OS) {
         }
     }else {
         // OSX
+        // /Users/[name]/Library/Application Support/Autodesk/webdeploy/production/
+        // process.env.HOME + Library
+        if (process.env.HOME){
+            fusPath = path.join(process.env.HOME, 'Library', 'Application Support', 'Autodesk', 'webdeploy', 'production');
+            exeName = `Autodesk Fusion 360.app`;
+        }
     }
 
     if (fusPath === "" || exeName === ""){
@@ -89,20 +94,36 @@ async function findFusion360Executable(os: OS) {
 
 /**
  * Spawns a executable in a given path using a async promise to await result if needed.
+ * This might only work on Windows, you need to call `open [appname]` on OSX
  * @param fileName Executable name
  * @param path Path for the executable
  */
-function spawnExec(fileName: string, path: string) : Promise<string>{
+function spawnExec(fileName: string, fpath: string) : Promise<string>{
     let promise: Promise<string> = new Promise((resolve, reject) => {
-        execFile(fileName, [], { cwd: path }, function(err: string, data: any) {
-            setFusionMenuText(false);
-            if (err){
-                reject(err);
-            }
-            else {
-                resolve(data.toString());
-            }
-        });
+        if (getOS() === OS.windows){
+            execFile(fileName, [], { cwd: fpath }, function(err: string, data: any) {
+                setFusionMenuText(false);
+                if (err){
+                    reject(err);
+                }
+                else {
+                    resolve(data.toString());
+                }
+            });
+        }else {
+            let fullname = path.join(fpath, fileName);
+            exec(`open ${fullname}`, (err: string, stdout: any, stderr: any) => {
+                setFusionMenuText(false);
+                
+                if (stderr){
+                    console.log(stderr.toString());
+                }
+
+                if(err){
+                    console.log(err);
+                }
+            });
+        }
     });
     return promise;
 }
@@ -134,7 +155,7 @@ export async function isProcessRunning(processName: string): Promise<boolean> {
     const cmd = (() => {
       switch (process.platform) {
         case 'win32': return `tasklist`;
-        case 'darwin': return `ps -ax | grep ${processName}`;
+        case 'darwin': return `ps aux | grep -v grep | grep -o -a -m 1 "${processName}"`; 
         case 'linux': return `ps -A`;
         default: return false;
       }
@@ -142,8 +163,8 @@ export async function isProcessRunning(processName: string): Promise<boolean> {
   
     return new Promise((resolve, reject) => {
       require('child_process').exec(cmd, (err: Error, stdout: string, stderr: string) => {
-        if (err) {
-            reject(err);
+        if (stderr) {
+            reject(stderr.toLowerCase());
         }
   
         resolve(stdout.toLowerCase().indexOf(processName.toLowerCase()) > -1);
