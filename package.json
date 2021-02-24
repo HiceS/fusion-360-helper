@@ -3,7 +3,7 @@
 	"displayName": "Fusion 360 Addin Helper",
 	"description": "Fusion 360 Addin Helper Extension, provides some useful utilities to make development easier.",
 	"publisher": "Hices",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"preview": false,
 	"bugs": {
 		"url": "https://github.com/HiceS/fusion-360-helper/issues",
