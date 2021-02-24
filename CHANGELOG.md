@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 2021-02-24
+### Changed
+- Implemented the updates to the contributions
+- Python paths are automatically looked for on activation if enabled (change this soon)
+### Added
+- Added settings for paths and enabled
+- Added experience where you can disable the popup in case you don't want it
+
 ## [1.0.3] - 2021-02-24
 ### Added
 - Added Open Fusion 360 Button

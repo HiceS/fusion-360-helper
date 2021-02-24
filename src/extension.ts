@@ -7,8 +7,6 @@ import {checkFusionOpen} from './processLauncher';
 export let fusionMenuItem: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext) {
-	// This can be active by having a .manifest file in your folders
-
 	let config = vscode.workspace.getConfiguration('fusion-360-helper');
 	const enabled = config.get("enabled");
 	
@@ -20,6 +18,10 @@ export function activate(context: vscode.ExtensionContext) {
 					// set it to enabled
 					config.update("enabled", true);
 					firstStart(context);
+				}else if(value === "no"){
+					// in this scenario we don't bother the user
+					// should add a command to re-enable it tho
+					config.update("enabled", false);
 				}
 			}
 		);
