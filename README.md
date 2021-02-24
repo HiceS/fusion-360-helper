@@ -25,21 +25,19 @@ Entension includes the following settings in `contributes.configuration`
 
 This extension contributes the following settings:
 
-* `fusion-360-helper.enable`: enable/disable this extension
-* `fusion-360-helper.path`: fusion 360 python path
-* `fusion-360-helper.definitions`: fusion 360 library definition locations
+* `fusion-360-helper.enabled`: enable/disable this extension
+* `fusion-360-helper.fusionPath`: fusion 360 application path
+* `fusion-360-helper.python.pythonPath`: fusion 360 python path
+* `fusion-360-helper.python.extraLibs`: fusion 360 library definition locations
 
 ## Known Issues
 
-TBD
-
-**MACOS** : Possibility for unintended pathing. 
+* OSX Start Fusion 360 Service not currently working
+* OSX still wants an interpretor on my machine for some reason
 
 ## Release Notes
 
-### 1.0.0
-
-Initial release of Fusion 360 Helper
+See `CHANGELOG.md`
 
 ## Legal Note
 

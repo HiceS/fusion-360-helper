@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		);
 	}else if(enabled){
-		start(context);
+		firstStart(context);
 	}
 }
 
