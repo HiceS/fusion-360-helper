@@ -51,11 +51,13 @@ export async function checkFusionOpen(open = false){
 async function findFusion360Executable(os: OS) {
     let fusPath: string = "";
     let exeName: string = "";
+    let searchName: string = "";
 
     if (os === OS.windows){
         if (process.env.APPDATA){
             fusPath = path.join(process.env.APPDATA, '..', 'Local', 'Autodesk', 'webdeploy', 'production');
-            exeName = "Fusion360.exe";
+            searchName = "FusionLauncher.exe.ini"; // So basically you don't want to open fusion directly you want the very specific launcher
+            exeName = `FusionLauncher.exe`;
         }
     }else {
         // OSX
@@ -64,6 +66,7 @@ async function findFusion360Executable(os: OS) {
         if (process.env.HOME){
             fusPath = path.join(process.env.HOME, 'Library', 'Application Support', 'Autodesk', 'webdeploy', 'production');
             exeName = `Autodesk Fusion 360.app`;
+            searchName = `Autodesk Fusion 360.app`;
         }
     }
 
@@ -76,17 +79,20 @@ async function findFusion360Executable(os: OS) {
         if (err){
             return;
         }
-        let entirePath = "";
+        let entireSearchPath = "";
 
         // Looks through each folder in the fusPath
         files.forEach(folder => {
             // This would be the executable
-            entirePath = path.join(fusPath, folder, exeName);
+            entireSearchPath = path.join(fusPath, folder, searchName);
             // Attempts to access the file to see if it exists
-            fs.access(entirePath, F_OK, err => {
+            fs.access(entireSearchPath, F_OK, err => {
                 if (!err){
+                    // on windows this is different
+                    entireSearchPath = path.join(fusPath, folder, exeName);
+
                     let config = vscode.workspace.getConfiguration('fusion-360-helper');
-                    config.update("fusionPath", entirePath);
+                    config.update("fusionPath", entireSearchPath);
                     
                     spawnExec(exeName, path.join(fusPath, folder));
                 }
