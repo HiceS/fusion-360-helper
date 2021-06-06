@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { generateCppAddin, generatePythonAddin } from './Addin/createAddins';
-import { getPythonLib } from './Intellisense/findPython';
+import { getPythonLib } from './PythonPathing/findPython';
+import { configureDocumentionLinker } from './DocLinker/contextLinkers';
 import {launchFusion360} from './processLauncher';
 import {checkFusionOpen} from './processLauncher';
 
@@ -30,12 +31,12 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 }
 
-export function deactivate() {}
+export function deactivate() {
+
+}
 
 function firstStart(context: vscode.ExtensionContext){
-	// automatically link the settings
 	getPythonLib();
-
 	start(context);
 }
 
@@ -48,12 +49,14 @@ function start(context: vscode.ExtensionContext){
 	let linkPython = vscode.commands.registerCommand('fusion-360-helper.linkPython', getPythonLib);
 
 	const fusionMenuItemID = "fusion-360-helper.fusionMenuItem";
-
 	fusionMenuItem = createStatusBarItem(fusionMenuItemID);
 	let fusionMenuItemClick = vscode.commands.registerCommand(fusionMenuItemID, launchFusion360);
 
 	let eventUpdate = vscode.window.onDidChangeWindowState(windowStateChange);
-	// Subscribing to UI
+
+	// this will automagically add the context
+	configureDocumentionLinker(context);
+
 	context.subscriptions.push(pythonAddin, cppAddin, linkPython, fusionMenuItem, fusionMenuItemClick, eventUpdate);
 
 	fusionMenuItem.show();

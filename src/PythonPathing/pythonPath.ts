@@ -3,6 +3,8 @@ import { setPythonPath } from './envFiles';
 
 /**
  * Singleton to control the PythonPath and keep it updated
+ * This wouldn't work and as such isn't used
+ * @NOTE NOT IN USE
  */
 export class PythonPath {
     private static instance: PythonPath;

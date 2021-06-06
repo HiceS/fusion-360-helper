@@ -1,5 +1,6 @@
 import path = require('path');
 import fs = require('fs');
+
 import { F_OK } from 'constants';
 import { window } from 'vscode';
 
@@ -14,7 +15,6 @@ import {setPythonPath} from './envFiles';
 export function getPythonLib() {
     let fusPath: string = "";
     let pythonPath: string = "";
-
     let libraryPath: string = "";
 
     switch (getOS()) {
@@ -64,6 +64,9 @@ export function getPythonLib() {
         });     
     });
 }
+
+// These functions below should return tuples of data and an error if present
+// TODO: condense
 
 function getWindowsPath(): string {
     if (process.env.APPDATA){

@@ -49,8 +49,23 @@
 			{
 				"command": "fusion-360-helper.linkPython",
 				"title": "Link Fusion 360 Python"
+			},
+			{
+				"command": "fusion-360-helper.docsOpen",
+				"title": "Open Fusion 360 Documentaion"
+			},
+			{
+				"command": "fusion-360-helper.openURI",
+				"title": "Open Fusion 360 Documentation Website"
 			}
 		],
+		"menus": {
+			"editor/context": [{
+				"when": "resourceLangId == python",
+				"command": "fusion-360-helper.docsOpen",
+				"group": "navigation"
+			}]
+		},
 		"configuration": {
 			"title": "F360 Helper",
 			"properties": {
@@ -97,5 +112,8 @@
 		"mocha": "^8.2.1",
 		"typescript": "^4.1.3",
 		"vscode-test": "^1.5.0"
+	},
+	"dependencies": {
+		"sass": "^1.34.1"
 	}
 }
