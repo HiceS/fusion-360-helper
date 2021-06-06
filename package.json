@@ -5,6 +5,7 @@
 	"publisher": "Hices",
 	"version": "1.0.4",
 	"preview": false,
+	"extensionKind": ["ui"],
 	"bugs": {
 		"url": "https://github.com/HiceS/fusion-360-helper/issues",
 		"email": "shawn.hice@autodesk.com"
@@ -51,18 +52,22 @@
 				"title": "Link Fusion 360 Python"
 			},
 			{
-				"command": "fusion-360-helper.docsOpen",
+				"command": "fusion-360-helper.docs.open",
 				"title": "Open Fusion 360 Documentaion"
 			},
 			{
-				"command": "fusion-360-helper.openURI",
+				"command": "fusion-360-helper.docs.openURI",
 				"title": "Open Fusion 360 Documentation Website"
+			},
+			{
+				"command": "fusion-360-helper.docs.internalPanel",
+				"title": "Open Fusion 360 Documentation Editor Page"
 			}
 		],
 		"menus": {
 			"editor/context": [{
 				"when": "resourceLangId == python",
-				"command": "fusion-360-helper.docsOpen",
+				"command": "fusion-360-helper.docs.open",
 				"group": "navigation"
 			}]
 		},
@@ -112,8 +117,5 @@
 		"mocha": "^8.2.1",
 		"typescript": "^4.1.3",
 		"vscode-test": "^1.5.0"
-	},
-	"dependencies": {
-		"sass": "^1.34.1"
 	}
 }

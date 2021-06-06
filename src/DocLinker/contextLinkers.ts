@@ -22,7 +22,10 @@ import {
     env,
 } from "vscode";
 
+import { DocumentationPanel } from "./docsPanel";
+
 export function configureDocumentionLinker(context: ExtensionContext){
+    const _docsPanel: DocumentationPanel = new DocumentationPanel(context);
     const _opener: URIOpener = new URIOpener(context);
 	const _hover: LinkerHover = new LinkerHover(context);
 	const _docButton: LinkerMenu = new LinkerMenu(context);
@@ -51,7 +54,7 @@ class LinkerMenu {
 
     public constructor(context: ExtensionContext){
         let commandDisp: Disposable = commands.registerCommand(
-            "fusion-360-helper.docsOpen",
+            "fusion-360-helper.docs.open",
             openHelp,
         );
 
@@ -62,7 +65,7 @@ class LinkerMenu {
 class URIOpener {
     public constructor(context: ExtensionContext){
         let commandDisp: Disposable = commands.registerCommand(
-            "fusion-360-helper.openURI",
+            "fusion-360-helper.docs.openURI",
             openURLWithString
         );
 
@@ -77,7 +80,7 @@ class FusionHoverProvider implements HoverProvider{
         console.debug(word);
 
         if(word) {
-            const commentCommandUri = Uri.parse(`command:fusion-360-helper.openURI?${encodeURIComponent(JSON.stringify(word))}`);
+            const commentCommandUri = Uri.parse(`command:fusion-360-helper.docs.internalPanel?${encodeURIComponent(JSON.stringify(word))}`);
             const contents = new MarkdownString(`[Go To Help Documentation](${commentCommandUri})`);
             contents.isTrusted = true;
             return new Hover(contents);

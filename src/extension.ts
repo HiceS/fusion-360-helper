@@ -4,6 +4,7 @@ import { getPythonLib } from './PythonPathing/findPython';
 import { configureDocumentionLinker } from './DocLinker/contextLinkers';
 import {launchFusion360} from './processLauncher';
 import {checkFusionOpen} from './processLauncher';
+import { DocumentationPanel } from './DocLinker/docsPanel';
 
 export let fusionMenuItem: vscode.StatusBarItem;
 
